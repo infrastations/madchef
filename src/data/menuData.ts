@@ -101,7 +101,7 @@ export const menuData: MenuGroup[] = [
 
 // Food category images mapping
 export const categoryImages: Record<string, string> = {
-  "Teasers": "https://images.unsplash.com/photo-1630384060421-cb20aab675db?w=400",
+  "Teasers": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400",
   "Crispy Chicken": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400",
   "Classic Burgers": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
   "Gourmet Burgers": "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400",
