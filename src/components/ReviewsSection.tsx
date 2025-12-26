@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { reviews } from "@/data/reviewsData";
@@ -10,6 +10,14 @@ const ReviewsSection = () => {
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Auto-rotate reviews every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [totalPages]);
 
   const displayedReviews = reviews.slice(
     currentPage * reviewsPerPage,
@@ -55,7 +63,7 @@ const ReviewsSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {displayedReviews.map((review, index) => (
             <motion.div
-              key={review.id}
+              key={`${review.id}-${currentPage}`}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 * index }}

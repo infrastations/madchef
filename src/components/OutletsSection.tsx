@@ -1,25 +1,40 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Phone, ExternalLink, Navigation } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { MapPin, Clock, Phone, Navigation } from "lucide-react";
 import { outlets, Outlet } from "@/data/outletsData";
+
+const MAPBOX_TOKEN = "pk.eyJ1IjoibWRyYWtpYnRyb2ZkZXIiLCJhIjoiY21qbmFncmdxMnk4bTNncXo2YXpvdHJ4MyJ9.LOJIVP-Wr-TlN6Tvm5YjwA";
+
+// Unique colors for each outlet marker
+const markerColors = [
+  "#c41e3a", // Red
+  "#f5a623", // Orange
+  "#2ecc71", // Green
+  "#3498db", // Blue
+  "#9b59b6", // Purple
+  "#e91e63", // Pink
+  "#00bcd4", // Cyan
+  "#ff5722", // Deep Orange
+  "#795548", // Brown
+];
 
 const OutletsSection = () => {
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet | null>(null);
-  const [mapToken, setMapToken] = useState<string>("");
-  const [showMapInput, setShowMapInput] = useState(true);
+  const [blinkingMarker, setBlinkingMarker] = useState<string | null>(null);
   const ref = useRef(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
+  const markersRef = useRef<Map<string, HTMLElement>>(new Map());
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    if (!mapToken || !mapContainerRef.current) return;
+    if (!mapContainerRef.current) return;
 
     const initMap = async () => {
       const mapboxgl = await import("mapbox-gl");
       await import("mapbox-gl/dist/mapbox-gl.css");
       
-      mapboxgl.default.accessToken = mapToken;
+      mapboxgl.default.accessToken = MAPBOX_TOKEN;
       
       const map = new mapboxgl.default.Map({
         container: mapContainerRef.current!,
@@ -52,22 +67,26 @@ const OutletsSection = () => {
         });
 
         // Add markers for each outlet
-        outlets.forEach((outlet) => {
+        outlets.forEach((outlet, index) => {
+          const color = markerColors[index % markerColors.length];
+          
           // Create custom marker element
           const el = document.createElement("div");
           el.className = "custom-marker";
+          el.id = `marker-${outlet.branch_name}`;
           el.innerHTML = `
-            <div style="
+            <div class="marker-inner" style="
               width: 40px;
               height: 40px;
-              background: linear-gradient(135deg, #c41e3a, #f5a623);
+              background: ${color};
               border-radius: 50%;
               display: flex;
               align-items: center;
               justify-content: center;
               cursor: pointer;
-              box-shadow: 0 4px 20px rgba(196, 30, 58, 0.5);
-              transition: transform 0.3s ease;
+              box-shadow: 0 4px 20px ${color}80;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              border: 3px solid white;
             ">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -76,14 +95,19 @@ const OutletsSection = () => {
             </div>
           `;
 
+          markersRef.current.set(outlet.branch_name, el);
+
           el.addEventListener("mouseenter", () => {
             el.style.transform = "scale(1.2)";
           });
           el.addEventListener("mouseleave", () => {
-            el.style.transform = "scale(1)";
+            if (blinkingMarker !== outlet.branch_name) {
+              el.style.transform = "scale(1)";
+            }
           });
           el.addEventListener("click", () => {
             setSelectedOutlet(outlet);
+            highlightMarker(outlet.branch_name);
             map.flyTo({
               center: outlet.coordinates,
               zoom: 15,
@@ -106,10 +130,59 @@ const OutletsSection = () => {
         mapRef.current.remove();
       }
     };
-  }, [mapToken]);
+  }, []);
+
+  // Highlight and blink marker function
+  const highlightMarker = (branchName: string) => {
+    // Reset previous blinking marker
+    if (blinkingMarker && markersRef.current.has(blinkingMarker)) {
+      const prevMarker = markersRef.current.get(blinkingMarker);
+      if (prevMarker) {
+        prevMarker.classList.remove("marker-blink");
+        prevMarker.style.transform = "scale(1)";
+      }
+    }
+
+    // Set new blinking marker
+    setBlinkingMarker(branchName);
+    const marker = markersRef.current.get(branchName);
+    if (marker) {
+      marker.classList.add("marker-blink");
+      marker.style.transform = "scale(1.3)";
+    }
+  };
+
+  const handleDirectionClick = (outlet: Outlet) => {
+    highlightMarker(outlet.branch_name);
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: outlet.coordinates,
+        zoom: 16,
+        pitch: 60,
+        duration: 2000,
+      });
+    }
+  };
 
   return (
     <section id="outlets" className="py-24 relative overflow-hidden">
+      {/* Blinking animation style */}
+      <style>{`
+        @keyframes markerBlink {
+          0%, 100% { 
+            transform: scale(1.3);
+            box-shadow: 0 0 20px 10px rgba(245, 166, 35, 0.6);
+          }
+          50% { 
+            transform: scale(1.5);
+            box-shadow: 0 0 30px 15px rgba(245, 166, 35, 0.9);
+          }
+        }
+        .marker-blink .marker-inner {
+          animation: markerBlink 1s ease-in-out infinite;
+        }
+      `}</style>
+
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-dark" />
       <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-x-1/2" />
@@ -140,46 +213,17 @@ const OutletsSection = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden glass-dark"
+            className="relative h-[500px] lg:h-[700px] rounded-2xl overflow-hidden glass-dark"
           >
-            {showMapInput && !mapToken ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                <MapPin className="text-primary mb-4" size={48} />
-                <h3 className="font-bebas text-2xl text-foreground mb-4">Enable 3D Map</h3>
-                <p className="text-foreground/60 text-sm mb-6 max-w-sm">
-                  Enter your Mapbox public token to view the interactive 3D map with all our outlet locations
-                </p>
-                <input
-                  type="text"
-                  placeholder="Enter Mapbox public token"
-                  className="w-full max-w-sm px-4 py-3 rounded-lg bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary mb-4"
-                  onChange={(e) => {
-                    if (e.target.value.startsWith("pk.")) {
-                      setMapToken(e.target.value);
-                      setShowMapInput(false);
-                    }
-                  }}
-                />
-                <a
-                  href="https://mapbox.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-secondary text-sm hover:underline"
-                >
-                  Get your free token at mapbox.com →
-                </a>
-              </div>
-            ) : (
-              <div ref={mapContainerRef} className="absolute inset-0" />
-            )}
+            <div ref={mapContainerRef} className="absolute inset-0" />
           </motion.div>
 
-          {/* Outlets List */}
+          {/* Outlets List - All visible */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar"
+            className="space-y-3"
           >
             {outlets.map((outlet, index) => (
               <motion.div
@@ -187,97 +231,61 @@ const OutletsSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 * index }}
-                onClick={() => {
-                  setSelectedOutlet(outlet);
-                  if (mapRef.current) {
-                    mapRef.current.flyTo({
-                      center: outlet.coordinates,
-                      zoom: 15,
-                      pitch: 60,
-                      duration: 2000,
-                    });
-                  }
-                }}
-                className={`glass-dark p-5 rounded-xl cursor-pointer transition-all duration-300 ${
+                className={`glass-dark p-4 rounded-xl transition-all duration-300 ${
                   selectedOutlet?.branch_name === outlet.branch_name
                     ? "ring-2 ring-primary fire-glow"
                     : "hover:ring-1 hover:ring-primary/50"
                 }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="font-bebas text-xl text-foreground mb-2 flex items-center gap-2">
-                      <MapPin className="text-primary" size={18} />
-                      {outlet.branch_name}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bebas text-lg text-foreground mb-1 flex items-center gap-2">
+                      <div 
+                        className="w-4 h-4 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: markerColors[index % markerColors.length] }}
+                      />
+                      <span className="truncate">{outlet.branch_name}</span>
                     </h3>
-                    <p className="text-foreground/60 text-sm mb-3">{outlet.address}</p>
-                    <div className="flex flex-wrap gap-4 text-sm">
+                    <p className="text-foreground/60 text-xs mb-2 truncate">{outlet.address}</p>
+                    <div className="flex flex-wrap gap-3 text-xs">
                       <span className="flex items-center gap-1 text-secondary">
-                        <Clock size={14} />
+                        <Clock size={12} />
                         {outlet.opening_hours}
                       </span>
-                      <a
-                        href={`tel:${outlet.phone_number}`}
-                        className="flex items-center gap-1 text-foreground/70 hover:text-primary transition-colors"
-                      >
-                        <Phone size={14} />
-                        {outlet.phone_number}
-                      </a>
                     </div>
                   </div>
-                  <a
-                    href={outlet.google_maps_location}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-gradient-fire rounded-lg hover-fire flex-shrink-0"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Navigation size={20} className="text-foreground" />
-                  </a>
+                  
+                  {/* Action Buttons - Always visible */}
+                  <div className="flex gap-2 flex-shrink-0">
+                    <a
+                      href={`tel:${outlet.phone_number}`}
+                      className="p-2.5 bg-muted hover:bg-muted/80 rounded-lg transition-colors flex items-center gap-1"
+                      title="Call"
+                    >
+                      <Phone size={16} className="text-foreground" />
+                    </a>
+                    <button
+                      onClick={() => handleDirectionClick(outlet)}
+                      className="p-2.5 bg-gradient-fire rounded-lg hover-fire flex items-center gap-1"
+                      title="Show on map"
+                    >
+                      <Navigation size={16} className="text-foreground" />
+                    </button>
+                    <a
+                      href={outlet.google_maps_location}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2.5 bg-secondary/20 hover:bg-secondary/30 rounded-lg transition-colors flex items-center gap-1"
+                      title="Open in Google Maps"
+                    >
+                      <MapPin size={16} className="text-secondary" />
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
-
-        {/* Selected Outlet Popup */}
-        <AnimatePresence>
-          {selectedOutlet && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="fixed bottom-24 left-1/2 -translate-x-1/2 glass-dark p-6 rounded-2xl z-50 max-w-md w-[90%] fire-glow"
-            >
-              <button
-                onClick={() => setSelectedOutlet(null)}
-                className="absolute top-4 right-4 text-foreground/50 hover:text-foreground"
-              >
-                ✕
-              </button>
-              <h3 className="font-bebas text-2xl text-foreground mb-2">
-                {selectedOutlet.branch_name}
-              </h3>
-              <p className="text-foreground/60 text-sm mb-4">{selectedOutlet.address}</p>
-              <div className="flex gap-4">
-                <a
-                  href={`tel:${selectedOutlet.phone_number}`}
-                  className="flex-1 bg-muted text-foreground py-3 rounded-lg text-center font-medium hover:bg-muted/80 transition-colors"
-                >
-                  Call Now
-                </a>
-                <a
-                  href={selectedOutlet.google_maps_location}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-gradient-fire text-foreground py-3 rounded-lg text-center font-medium hover-fire"
-                >
-                  Get Directions
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );
