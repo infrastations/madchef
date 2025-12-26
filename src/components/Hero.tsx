@@ -7,8 +7,21 @@ import hero3 from "@/assets/hero-3.png";
 import hero4 from "@/assets/hero-4.png";
 import hero5 from "@/assets/hero-5.png";
 import hero6 from "@/assets/hero-6.png";
+import hero7 from "@/assets/hero-7.png";
+import hero8 from "@/assets/hero-8.png";
+import hero9 from "@/assets/hero-9.png";
+import hero10 from "@/assets/hero-10.png";
+import hero11 from "@/assets/hero-11.png";
+import hero12 from "@/assets/hero-12.png";
+import hero13 from "@/assets/hero-13.png";
+import hero14 from "@/assets/hero-14.png";
+import hero15 from "@/assets/hero-15.png";
 
-const heroImages = [hero1, hero2, hero3, hero4, hero5, hero6];
+// New images first, then existing images (hero-1 moved to end)
+const heroImages = [
+  hero7, hero8, hero9, hero10, hero11, hero12, hero13, hero14, hero15,
+  hero2, hero3, hero4, hero5, hero6, hero1
+];
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -106,14 +119,14 @@ const Hero = () => {
       </div>
 
       {/* Image Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 flex-wrap justify-center max-w-[90%]">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImage(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index === currentImage
-                ? "bg-primary w-8"
+                ? "bg-primary w-6"
                 : "bg-foreground/30 hover:bg-foreground/50"
             }`}
           />

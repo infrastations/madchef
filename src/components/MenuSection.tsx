@@ -1,13 +1,12 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Grid3X3, List, Flame, ChevronRight } from "lucide-react";
+import { Grid3X3, List, Flame } from "lucide-react";
 import { menuData, categoryImages } from "@/data/menuData";
 
 type ViewMode = "cards" | "table";
 
 const MenuSection = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -69,7 +68,7 @@ const MenuSection = () => {
           </button>
         </motion.div>
 
-        {/* Card View */}
+        {/* Card View - All items visible */}
         {viewMode === "cards" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {menuData.map((category, categoryIndex) => (
@@ -78,10 +77,7 @@ const MenuSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.1 * categoryIndex }}
-                className="menu-card group cursor-pointer"
-                onClick={() => setActiveCategory(
-                  activeCategory === category.menu_group ? null : category.menu_group
-                )}
+                className="menu-card group"
               >
                 {/* Category Image */}
                 <div className="relative h-48 overflow-hidden">
@@ -104,13 +100,13 @@ const MenuSection = () => {
                   </div>
                 </div>
 
-                {/* Items Preview */}
+                {/* All Items */}
                 <div className="p-4">
                   {category.note && (
                     <p className="text-secondary/80 text-xs mb-3 italic">{category.note}</p>
                   )}
                   <div className="space-y-3">
-                    {category.items.slice(0, activeCategory === category.menu_group ? undefined : 3).map((item) => (
+                    {category.items.map((item) => (
                       <div key={item.food_name} className="flex justify-between items-start">
                         <div className="flex-1">
                           <h4 className="text-foreground font-medium text-sm">{item.food_name}</h4>
@@ -124,12 +120,6 @@ const MenuSection = () => {
                       </div>
                     ))}
                   </div>
-                  {category.items.length > 3 && activeCategory !== category.menu_group && (
-                    <div className="flex items-center gap-1 text-primary text-sm mt-4 group-hover:gap-2 transition-all">
-                      <span>View all {category.items.length} items</span>
-                      <ChevronRight size={16} />
-                    </div>
-                  )}
                 </div>
               </motion.div>
             ))}
