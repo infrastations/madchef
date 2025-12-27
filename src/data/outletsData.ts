@@ -5,6 +5,7 @@ export interface Outlet {
   opening_hours: string;
   phone_number: string;
   coordinates: [number, number]; // [lng, lat]
+  facebook_url?: string;
 }
 
 export const outlets: Outlet[] = [
@@ -15,6 +16,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.4022, 23.7937],
+    facebook_url: "https://www.facebook.com/profile.php?id=100089510358930",
   },
   {
     branch_name: "Madchef Mirpur",
@@ -23,6 +25,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.3654, 23.8041],
+    facebook_url: "https://www.facebook.com/profile.php?id=100090016715258",
   },
   {
     branch_name: "Madchef Bashundhara",
@@ -55,6 +58,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.3974, 23.7397],
+    facebook_url: "https://www.facebook.com/MadchefBaily",
   },
   {
     branch_name: "Madchef Dhanmondi",
@@ -63,6 +67,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.3758, 23.7461],
+    facebook_url: "https://www.facebook.com/profile.php?id=100090069726279",
   },
   {
     branch_name: "Madchef Banasree",
@@ -79,5 +84,15 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.3987, 23.8693],
+    facebook_url: "https://www.facebook.com/profile.php?id=100089481919701",
+  },
+  {
+    branch_name: "Madchef Wari",
+    google_maps_location: "https://maps.app.goo.gl/wariLocation",
+    address: "Tipu Sultan Road, Wari, Dhaka",
+    opening_hours: "11 AM - 11 PM",
+    phone_number: "+8809638050505",
+    coordinates: [90.4150, 23.7150],
+    facebook_url: "https://www.facebook.com/profile.php?id=100089802410540",
   },
 ];

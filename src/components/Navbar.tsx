@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, MapPin } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/madchef-logo.png";
 
 const navLinks = [
   { name: "Home", href: "#home" },
   { name: "Our Story", href: "#story" },
   { name: "Menu", href: "#menu" },
+  { name: "Gallery", href: "#gallery" },
   { name: "Outlets", href: "#outlets" },
   { name: "Reviews", href: "#reviews" },
   { name: "Events", href: "#events" },

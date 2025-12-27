@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, Clock, Phone, Navigation } from "lucide-react";
+import { MapPin, Clock, Phone, Navigation, Facebook } from "lucide-react";
 import { outlets, Outlet } from "@/data/outletsData";
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoibWRyYWtpYnRyb2ZkZXIiLCJhIjoiY21qbmFncmdxMnk4bTNncXo2YXpvdHJ4MyJ9.LOJIVP-Wr-TlN6Tvm5YjwA";
@@ -16,6 +16,7 @@ const markerColors = [
   "#00bcd4", // Cyan
   "#ff5722", // Deep Orange
   "#795548", // Brown
+  "#607d8b", // Blue Grey
 ];
 
 const OutletsSection = () => {
@@ -153,6 +154,7 @@ const OutletsSection = () => {
   };
 
   const handleDirectionClick = (outlet: Outlet) => {
+    setSelectedOutlet(outlet);
     highlightMarker(outlet.branch_name);
     if (mapRef.current) {
       mapRef.current.flyTo({
@@ -203,89 +205,107 @@ const OutletsSection = () => {
             <span className="fire-text">OUTLETS</span>
           </h2>
           <p className="text-foreground/60 max-w-xl mx-auto">
-            9 locations across Dhaka, ready to serve you the MAD experience
+            {outlets.length} locations across Dhaka, ready to serve you the MAD experience
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Map Container */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative h-[500px] lg:h-[700px] rounded-2xl overflow-hidden glass-dark"
-          >
-            <div ref={mapContainerRef} className="absolute inset-0" />
-          </motion.div>
-
-          {/* Outlets List - All visible */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-3"
-          >
-            {outlets.map((outlet, index) => (
-              <motion.div
-                key={outlet.branch_name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                className={`glass-dark p-4 rounded-xl transition-all duration-300 ${
-                  selectedOutlet?.branch_name === outlet.branch_name
-                    ? "ring-2 ring-primary fire-glow"
-                    : "hover:ring-1 hover:ring-primary/50"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
+        {/* Outlets Grid - 3 columns */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12"
+        >
+          {outlets.map((outlet, index) => (
+            <motion.div
+              key={outlet.branch_name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.05 * index }}
+              className={`glass-dark p-4 rounded-xl transition-all duration-300 ${
+                selectedOutlet?.branch_name === outlet.branch_name
+                  ? "ring-2 ring-primary fire-glow"
+                  : "hover:ring-1 hover:ring-primary/50"
+              }`}
+            >
+              <div className="flex flex-col gap-3">
+                <div className="flex items-start gap-2">
+                  <div 
+                    className="w-4 h-4 rounded-full flex-shrink-0 mt-1"
+                    style={{ backgroundColor: markerColors[index % markerColors.length] }}
+                  />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bebas text-lg text-foreground mb-1 flex items-center gap-2">
-                      <div 
-                        className="w-4 h-4 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: markerColors[index % markerColors.length] }}
-                      />
-                      <span className="truncate">{outlet.branch_name}</span>
+                    <h3 className="font-bebas text-lg text-foreground leading-tight">
+                      {outlet.branch_name}
                     </h3>
-                    <p className="text-foreground/60 text-xs mb-2 truncate">{outlet.address}</p>
-                    <div className="flex flex-wrap gap-3 text-xs">
-                      <span className="flex items-center gap-1 text-secondary">
-                        <Clock size={12} />
-                        {outlet.opening_hours}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Action Buttons - Always visible */}
-                  <div className="flex gap-2 flex-shrink-0">
-                    <a
-                      href={`tel:${outlet.phone_number}`}
-                      className="p-2.5 bg-muted hover:bg-muted/80 rounded-lg transition-colors flex items-center gap-1"
-                      title="Call"
-                    >
-                      <Phone size={16} className="text-foreground" />
-                    </a>
-                    <button
-                      onClick={() => handleDirectionClick(outlet)}
-                      className="p-2.5 bg-gradient-fire rounded-lg hover-fire flex items-center gap-1"
-                      title="Show on map"
-                    >
-                      <Navigation size={16} className="text-foreground" />
-                    </button>
-                    <a
-                      href={outlet.google_maps_location}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2.5 bg-secondary/20 hover:bg-secondary/30 rounded-lg transition-colors flex items-center gap-1"
-                      title="Open in Google Maps"
-                    >
-                      <MapPin size={16} className="text-secondary" />
-                    </a>
+                    <p className="text-foreground/60 text-xs mt-1 line-clamp-2">{outlet.address}</p>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+                
+                <div className="flex items-center gap-2 text-xs text-secondary">
+                  <Clock size={12} />
+                  {outlet.opening_hours}
+                </div>
+                
+                {/* Action Buttons - Always visible */}
+                <div className="flex gap-2 flex-wrap">
+                  <a
+                    href={`tel:${outlet.phone_number}`}
+                    className="flex-1 min-w-fit p-2 bg-muted hover:bg-muted/80 rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                    title="Call"
+                  >
+                    <Phone size={14} className="text-foreground" />
+                    <span className="text-foreground text-xs">Call</span>
+                  </a>
+                  <button
+                    onClick={() => handleDirectionClick(outlet)}
+                    className="flex-1 min-w-fit p-2 bg-gradient-fire rounded-lg hover-fire flex items-center justify-center gap-1.5"
+                    title="Show on map"
+                  >
+                    <Navigation size={14} className="text-foreground" />
+                    <span className="text-foreground text-xs">Map</span>
+                  </button>
+                  <a
+                    href={outlet.google_maps_location}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-secondary/20 hover:bg-secondary/30 rounded-lg transition-colors flex items-center justify-center"
+                    title="Open in Google Maps"
+                  >
+                    <MapPin size={14} className="text-secondary" />
+                  </a>
+                  {outlet.facebook_url && (
+                    <a
+                      href={outlet.facebook_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-blue-600/20 hover:bg-blue-600/30 rounded-lg transition-colors flex items-center justify-center"
+                      title="Facebook Page"
+                    >
+                      <Facebook size={14} className="text-blue-400" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Map Container - Below Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative h-[500px] rounded-2xl overflow-hidden glass-dark"
+        >
+          <div ref={mapContainerRef} className="absolute inset-0" />
+          {selectedOutlet && (
+            <div className="absolute bottom-4 left-4 right-4 glass-dark p-4 rounded-xl z-10">
+              <h4 className="font-bebas text-xl text-foreground">{selectedOutlet.branch_name}</h4>
+              <p className="text-foreground/60 text-sm">{selectedOutlet.address}</p>
+            </div>
+          )}
+        </motion.div>
       </div>
     </section>
   );
