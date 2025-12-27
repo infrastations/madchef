@@ -1,11 +1,22 @@
+import outletBanani from "@/assets/outlet-banani.png";
+import outletMirpur from "@/assets/outlet-mirpur.png";
+import outletBashundhara from "@/assets/outlet-bashundhara.png";
+import outletGulshan from "@/assets/outlet-gulshan.png";
+import outletKhilgaon from "@/assets/outlet-khilgaon.png";
+import outletBailey from "@/assets/outlet-bailey.png";
+import outletDhanmondi from "@/assets/outlet-dhanmondi.png";
+import outletUttara from "@/assets/outlet-uttara.png";
+import outletWari from "@/assets/outlet-wari.png";
+
 export interface Outlet {
   branch_name: string;
   google_maps_location: string;
   address: string;
   opening_hours: string;
   phone_number: string;
-  coordinates: [number, number]; // [lng, lat]
+  coordinates: [number, number];
   facebook_url?: string;
+  image: string;
 }
 
 export const outlets: Outlet[] = [
@@ -17,6 +28,7 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.4022, 23.7937],
     facebook_url: "https://www.facebook.com/profile.php?id=100089510358930",
+    image: outletBanani,
   },
   {
     branch_name: "Madchef Mirpur",
@@ -26,6 +38,7 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.3654, 23.8041],
     facebook_url: "https://www.facebook.com/profile.php?id=100090016715258",
+    image: outletMirpur,
   },
   {
     branch_name: "Madchef Bashundhara",
@@ -34,6 +47,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8801997902383",
     coordinates: [90.4247, 23.8159],
+    image: outletBashundhara,
   },
   {
     branch_name: "Madchef & Cheez! Gulshan 1",
@@ -42,6 +56,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8809638050505",
     coordinates: [90.4152, 23.7808],
+    image: outletGulshan,
   },
   {
     branch_name: "Madchef Khilgaon",
@@ -50,6 +65,7 @@ export const outlets: Outlet[] = [
     opening_hours: "11 AM - 11 PM",
     phone_number: "+8801334931438",
     coordinates: [90.4342, 23.7475],
+    image: outletKhilgaon,
   },
   {
     branch_name: "Madchef & Cheez ~ Bailey Road",
@@ -59,6 +75,7 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.3974, 23.7397],
     facebook_url: "https://www.facebook.com/MadchefBaily",
+    image: outletBailey,
   },
   {
     branch_name: "Madchef Dhanmondi",
@@ -68,14 +85,7 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.3758, 23.7461],
     facebook_url: "https://www.facebook.com/profile.php?id=100090069726279",
-  },
-  {
-    branch_name: "Madchef Banasree",
-    google_maps_location: "https://maps.app.goo.gl/Yr4m9ary3tQxTajh7",
-    address: "House - 9, Agora Building, Block - A, Main Road, Dhaka 1219",
-    opening_hours: "11 AM - 11 PM",
-    phone_number: "+8809638050505",
-    coordinates: [90.4412, 23.7625],
+    image: outletDhanmondi,
   },
   {
     branch_name: "Madchef Uttara",
@@ -85,6 +95,7 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.3987, 23.8693],
     facebook_url: "https://www.facebook.com/profile.php?id=100089481919701",
+    image: outletUttara,
   },
   {
     branch_name: "Madchef Wari",
@@ -94,5 +105,6 @@ export const outlets: Outlet[] = [
     phone_number: "+8809638050505",
     coordinates: [90.4150, 23.7150],
     facebook_url: "https://www.facebook.com/profile.php?id=100089802410540",
+    image: outletWari,
   },
 ];

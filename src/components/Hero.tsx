@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown, Flame } from "lucide-react";
 import hero1 from "@/assets/hero-1.png";
 import hero2 from "@/assets/hero-2.png";
@@ -36,25 +36,29 @@ const Hero = () => {
   return (
     <section id="home" className="relative h-[85vh] min-h-[600px] max-h-[900px] flex items-center overflow-hidden">
       {/* Background Images */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentImage}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-          className="absolute inset-0"
-          style={{ backgroundColor: "hsl(var(--fire-dark))" }}
-        >
-          <img
-            src={heroImages[currentImage]}
-            alt="Madchef food"
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-fire-dark via-fire-dark/85 to-fire-dark/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-fire-dark via-transparent to-fire-dark/60" />
-        </motion.div>
-      </AnimatePresence>
+{/* Background Images with Crossfade - no black flash */}
+      <div className="absolute inset-0" style={{ backgroundColor: "hsl(var(--fire-dark))" }}>
+        {heroImages.map((image, index) => (
+          <motion.div
+            key={index}
+            initial={false}
+            animate={{ 
+              opacity: index === currentImage ? 1 : 0,
+              scale: index === currentImage ? 1 : 1.05,
+            }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <img
+              src={image}
+              alt="Madchef food"
+              className="w-full h-full object-cover object-center"
+            />
+          </motion.div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-r from-fire-dark via-fire-dark/85 to-fire-dark/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-fire-dark via-transparent to-fire-dark/60" />
+      </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10 pt-16">

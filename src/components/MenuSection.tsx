@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Grid3X3, List, Flame } from "lucide-react";
 import { menuData, categoryImageSets } from "@/data/menuData";
 
 type ViewMode = "cards" | "table";
 
-// Component for rotating images
+// Component for rotating images with crossfade (no black flash)
 const RotatingImages = ({ images, category }: { images: string[]; category: string }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -17,19 +17,21 @@ const RotatingImages = ({ images, category }: { images: string[]; category: stri
   }, [images.length]);
 
   return (
-    <div className="relative h-48 overflow-hidden">
-      <AnimatePresence mode="wait">
+    <div className="relative h-48 overflow-hidden bg-card">
+      {images.map((image, index) => (
         <motion.img
-          key={currentIndex}
-          src={images[currentIndex]}
+          key={index}
+          src={image}
           alt={category}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
+          initial={false}
+          animate={{ 
+            opacity: index === currentIndex ? 1 : 0,
+            scale: index === currentIndex ? 1 : 1.05,
+          }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0 w-full h-full object-cover"
         />
-      </AnimatePresence>
+      ))}
       <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
     </div>
   );
