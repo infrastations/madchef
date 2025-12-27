@@ -1,8 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import Hero, { HeroCTA } from "@/components/Hero";
 import BrandStory from "@/components/BrandStory";
 import MenuSection from "@/components/MenuSection";
+import GallerySection from "@/components/GallerySection";
 import OutletsSection from "@/components/OutletsSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import EventsSection from "@/components/EventsSection";
@@ -15,7 +16,7 @@ const Index = () => {
         <title>Madchef - Best Gourmet Burgers in Dhaka | Once You Go MAD, You Never Go BACK!</title>
         <meta
           name="description"
-          content="Experience the MAD combination of secret sauces & recipes at Madchef - Dhaka's premier gourmet burger destination since 2014. 9 locations, 100% halal, made fresh to order."
+          content="Experience the MAD combination of secret sauces & recipes at Madchef - Dhaka's premier gourmet burger destination since 2014. 10 locations, 100% halal, made fresh to order."
         />
         <meta
           name="keywords"
@@ -34,8 +35,10 @@ const Index = () => {
         <Navbar />
         <main>
           <Hero />
+          <HeroCTA />
           <BrandStory />
           <MenuSection />
+          <GallerySection />
           <OutletsSection />
           <ReviewsSection />
           <EventsSection />

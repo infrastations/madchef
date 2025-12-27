@@ -34,38 +34,39 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative h-[85vh] min-h-[600px] max-h-[900px] flex items-center overflow-hidden">
       {/* Background Images */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentImage}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
+          style={{ backgroundColor: "hsl(var(--fire-dark))" }}
         >
           <img
             src={heroImages[currentImage]}
             alt="Madchef food"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-fire-dark via-fire-dark/85 to-fire-dark/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-fire-dark via-transparent to-fire-dark/60" />
         </motion.div>
       </AnimatePresence>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10 pt-24">
-        <div className="max-w-3xl">
+      <div className="container mx-auto px-4 relative z-10 pt-16">
+        <div className="max-w-2xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex items-center gap-3 mb-6"
+            className="flex items-center gap-3 mb-4"
           >
-            <Flame className="text-primary animate-flame" size={32} />
-            <span className="text-secondary font-semibold uppercase tracking-widest text-sm">
+            <Flame className="text-primary animate-flame" size={28} />
+            <span className="text-secondary font-semibold uppercase tracking-widest text-xs md:text-sm">
               Since 2014 • Dhaka, Bangladesh
             </span>
           </motion.div>
@@ -74,7 +75,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="font-bebas text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-none mb-6"
+            className="font-bebas text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-4"
           >
             <span className="text-foreground">Once You Go</span>
             <br />
@@ -90,43 +91,22 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-foreground/70 text-lg md:text-xl mb-8 max-w-lg"
+            className="text-foreground/70 text-sm md:text-base mb-6 max-w-md"
           >
             Experience the MAD combination of secret sauces & recipes that makes our burgers unlike any others in Dhaka.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-wrap gap-4"
-          >
-            <a
-              href="#menu"
-              className="group bg-gradient-fire text-foreground px-8 py-4 rounded-full font-bold text-lg hover-fire flex items-center gap-2"
-            >
-              <span>Explore Menu</span>
-              <ChevronDown className="group-hover:translate-y-1 transition-transform" />
-            </a>
-            <a
-              href="#outlets"
-              className="border-2 border-primary/50 text-foreground px-8 py-4 rounded-full font-bold text-lg hover:border-primary hover:bg-primary/10 transition-all"
-            >
-              Find Outlet
-            </a>
-          </motion.div>
         </div>
       </div>
 
       {/* Image Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 flex-wrap justify-center max-w-[90%]">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 flex-wrap justify-center max-w-[90%]">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImage(index)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index === currentImage
-                ? "bg-primary w-6"
+                ? "bg-primary w-5"
                 : "bg-foreground/30 hover:bg-foreground/50"
             }`}
           />
@@ -138,18 +118,49 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-24 right-8 hidden md:flex flex-col items-center gap-2"
+        className="absolute bottom-20 right-6 hidden md:flex flex-col items-center gap-2"
       >
-        <span className="text-foreground/50 text-xs uppercase tracking-widest rotate-90 origin-center mb-8">
+        <span className="text-foreground/50 text-xs uppercase tracking-widest rotate-90 origin-center mb-6">
           Scroll
         </span>
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
         >
-          <ChevronDown className="text-primary" size={24} />
+          <ChevronDown className="text-primary" size={20} />
         </motion.div>
       </motion.div>
+    </section>
+  );
+};
+
+// CTA Buttons Section - Separate component below hero
+export const HeroCTA = () => {
+  return (
+    <section className="py-12 bg-gradient-to-b from-fire-dark to-background relative">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-wrap justify-center gap-4"
+        >
+          <a
+            href="#menu"
+            className="group bg-gradient-fire text-foreground px-8 py-4 rounded-full font-bold text-lg hover-fire flex items-center gap-2"
+          >
+            <span>Explore Menu</span>
+            <ChevronDown className="group-hover:translate-y-1 transition-transform" />
+          </a>
+          <a
+            href="#outlets"
+            className="border-2 border-primary/50 text-foreground px-8 py-4 rounded-full font-bold text-lg hover:border-primary hover:bg-primary/10 transition-all"
+          >
+            Find Outlet
+          </a>
+        </motion.div>
+      </div>
     </section>
   );
 };

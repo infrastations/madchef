@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Flame } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Flame, Globe, ExternalLink } from "lucide-react";
 import logo from "@/assets/madchef-logo.png";
 
 const Footer = () => {
@@ -29,12 +29,13 @@ const Footer = () => {
             <p className="text-foreground/60 text-sm mb-6 leading-relaxed">
               Once you go MAD, you never go BACK! Experience the best gourmet burgers in Dhaka since 2014.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3 flex-wrap">
               <a
-                href="https://facebook.com/madchefbd"
+                href="https://www.facebook.com/madchefbd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors"
+                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-blue-600/20 transition-colors"
+                title="Facebook"
               >
                 <Facebook size={18} className="text-foreground" />
               </a>
@@ -42,7 +43,8 @@ const Footer = () => {
                 href="https://instagram.com/madchefbd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors"
+                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-pink-600/20 transition-colors"
+                title="Instagram"
               >
                 <Instagram size={18} className="text-foreground" />
               </a>
@@ -50,7 +52,8 @@ const Footer = () => {
                 href="https://youtube.com/@madchefbd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors"
+                className="w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:bg-red-600/20 transition-colors"
+                title="YouTube"
               >
                 <Youtube size={18} className="text-foreground" />
               </a>
@@ -69,7 +72,7 @@ const Footer = () => {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {["Home", "Our Story", "Menu", "Outlets", "Reviews", "Events"].map((link) => (
+              {["Home", "Our Story", "Menu", "Gallery", "Outlets", "Reviews", "Events"].map((link) => (
                 <li key={link}>
                   <a
                     href={`#${link.toLowerCase().replace(" ", "-")}`}
@@ -105,21 +108,32 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="mailto:info@madchef.com.bd"
+                  href="mailto:hello@madchef.com.bd"
                   className="flex items-center gap-3 text-foreground/60 hover:text-primary transition-colors text-sm"
                 >
                   <Mail size={16} className="text-secondary" />
-                  info@madchef.com.bd
+                  hello@madchef.com.bd
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://madchef.com.bd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-foreground/60 hover:text-primary transition-colors text-sm"
+                >
+                  <Globe size={16} className="text-secondary" />
+                  madchef.com.bd
                 </a>
               </li>
               <li className="flex items-start gap-3 text-foreground/60 text-sm">
                 <MapPin size={16} className="text-secondary mt-1" />
-                <span>9 locations across Dhaka, Bangladesh</span>
+                <span>10 locations across Dhaka, Bangladesh</span>
               </li>
             </ul>
           </motion.div>
 
-          {/* Hours */}
+          {/* Order & Hours */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,21 +142,39 @@ const Footer = () => {
           >
             <h3 className="font-bebas text-2xl text-foreground mb-6 flex items-center gap-2">
               <Flame className="text-primary" size={20} />
-              Opening Hours
+              Order Online
             </h3>
-            <div className="glass-dark p-6 rounded-xl">
-              <p className="text-foreground font-semibold mb-2">All Outlets</p>
-              <p className="text-secondary text-2xl font-bebas">11 AM - 11 PM</p>
-              <p className="text-foreground/50 text-sm mt-2">Open 7 days a week</p>
-            </div>
-            <div className="mt-4">
+            <div className="space-y-3 mb-6">
               <a
-                href="tel:+8809638050505"
-                className="inline-flex items-center gap-2 bg-gradient-fire text-foreground px-6 py-3 rounded-full font-semibold text-sm hover-fire"
+                href="https://www.foodpanda.com.bd/chain/ce2hc/madchef"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 glass-dark p-3 rounded-lg hover:bg-pink-600/10 transition-colors group"
               >
-                <Phone size={16} />
-                Order Now
+                <div className="w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center">
+                  <span className="text-pink-400 font-bold text-xs">FP</span>
+                </div>
+                <span className="text-foreground/80 text-sm flex-1">Foodpanda</span>
+                <ExternalLink size={14} className="text-foreground/40 group-hover:text-pink-400" />
               </a>
+              <a
+                href="https://food.pathao.com/restaurants/gyzdqoa/madchef"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 glass-dark p-3 rounded-lg hover:bg-green-600/10 transition-colors group"
+              >
+                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <span className="text-green-400 font-bold text-xs">P</span>
+                </div>
+                <span className="text-foreground/80 text-sm flex-1">Pathao Food</span>
+                <ExternalLink size={14} className="text-foreground/40 group-hover:text-green-400" />
+              </a>
+            </div>
+            
+            <div className="glass-dark p-4 rounded-xl">
+              <p className="text-foreground font-semibold mb-1 text-sm">All Outlets</p>
+              <p className="text-secondary text-xl font-bebas">11 AM - 11 PM</p>
+              <p className="text-foreground/50 text-xs mt-1">Open 7 days a week</p>
             </div>
           </motion.div>
         </div>

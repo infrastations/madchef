@@ -1,9 +1,39 @@
-import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Grid3X3, List, Flame } from "lucide-react";
-import { menuData, categoryImages } from "@/data/menuData";
+import { menuData, categoryImageSets } from "@/data/menuData";
 
 type ViewMode = "cards" | "table";
+
+// Component for rotating images
+const RotatingImages = ({ images, category }: { images: string[]; category: string }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <div className="relative h-48 overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={category}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+    </div>
+  );
+};
 
 const MenuSection = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
@@ -79,14 +109,12 @@ const MenuSection = () => {
                 transition={{ duration: 0.6, delay: 0.1 * categoryIndex }}
                 className="menu-card group"
               >
-                {/* Category Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={categoryImages[category.menu_group]}
-                    alt={category.menu_group}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                {/* Category Image - Rotating */}
+                <div className="relative">
+                  <RotatingImages 
+                    images={categoryImageSets[category.menu_group] || [categoryImageSets["Classic Burgers"][0]]} 
+                    category={category.menu_group}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
                     <div className="flex items-center gap-2">
                       <Flame className="text-primary" size={24} />
@@ -94,9 +122,6 @@ const MenuSection = () => {
                         {category.menu_group}
                       </h3>
                     </div>
-                    <p className="text-foreground/60 text-sm mt-1">
-                      {category.items.length} items
-                    </p>
                   </div>
                 </div>
 

@@ -99,7 +99,56 @@ export const menuData: MenuGroup[] = [
   },
 ];
 
-// Food category images mapping
+// Multiple images per category for slideshow
+export const categoryImageSets: Record<string, string[]> = {
+  "Teasers": [
+    "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400",
+    "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?w=400",
+    "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400",
+  ],
+  "Crispy Chicken": [
+    "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400",
+    "https://images.unsplash.com/photo-1562967914-608f82629710?w=400",
+    "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400",
+  ],
+  "Classic Burgers": [
+    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
+    "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400",
+    "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400",
+  ],
+  "Gourmet Burgers": [
+    "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400",
+    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400",
+    "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400",
+  ],
+  "Poutines": [
+    "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400",
+    "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400",
+    "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?w=400",
+  ],
+  "Rice Meals": [
+    "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400",
+    "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400",
+    "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400",
+  ],
+  "Platters": [
+    "https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=400",
+    "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
+    "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400",
+  ],
+  "Shakes & Drinks": [
+    "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400",
+    "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400",
+    "https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=400",
+  ],
+  "Dessert": [
+    "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400",
+    "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400",
+    "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400",
+  ],
+};
+
+// Legacy single image mapping (kept for backward compatibility)
 export const categoryImages: Record<string, string> = {
   "Teasers": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400",
   "Crispy Chicken": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400",
