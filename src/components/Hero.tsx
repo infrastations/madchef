@@ -56,8 +56,8 @@ const Hero = () => {
             />
           </motion.div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-fire-dark via-fire-dark/85 to-fire-dark/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-fire-dark via-transparent to-fire-dark/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-fire-dark/80 via-fire-dark/60 to-fire-dark/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-fire-dark/80 via-transparent to-fire-dark/40" />
       </div>
 
       {/* Content */}

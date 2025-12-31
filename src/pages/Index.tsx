@@ -36,10 +36,10 @@ const Index = () => {
         <main>
           <Hero />
           <HeroCTA />
-          <BrandStory />
           <MenuSection />
-          <GallerySection />
           <OutletsSection />
+          <GallerySection />
+          <BrandStory />
           <ReviewsSection />
           <EventsSection />
         </main>
