@@ -109,7 +109,7 @@ export const categoryImageSets: Record<string, string[]> = {
   "Crispy Chicken": [
     "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400",
     "https://images.unsplash.com/photo-1562967914-608f82629710?w=400",
-    "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400",
+    "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400",
   ],
   "Classic Burgers": [
     "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",

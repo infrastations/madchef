@@ -10,6 +10,15 @@ import gallery6 from "@/assets/gallery-6.png";
 import gallery7 from "@/assets/gallery-7.png";
 import gallery8 from "@/assets/gallery-8.png";
 import gallery9 from "@/assets/gallery-9.png";
+import gallery10 from "@/assets/gallery-10.png";
+import gallery11 from "@/assets/gallery-11.png";
+import gallery12 from "@/assets/gallery-12.png";
+import gallery13 from "@/assets/gallery-13.png";
+import gallery14 from "@/assets/gallery-14.png";
+import gallery15 from "@/assets/gallery-15.png";
+import gallery16 from "@/assets/gallery-16.png";
+import gallery17 from "@/assets/gallery-17.png";
+import gallery18 from "@/assets/gallery-18.png";
 
 const galleryImages = [
   { src: gallery1, title: "Crispy Chicken Platter" },
@@ -21,6 +30,15 @@ const galleryImages = [
   { src: gallery7, title: "Paneer Sticks" },
   { src: gallery8, title: "The Original" },
   { src: gallery9, title: "Shah Poutine Special" },
+  { src: gallery10, title: "Gyro Fix" },
+  { src: gallery11, title: "Naga Achari Rice" },
+  { src: gallery12, title: "Chicken Steak Meal" },
+  { src: gallery13, title: "Gyro Chicken Over Fries" },
+  { src: gallery14, title: "Rice Platter" },
+  { src: gallery15, title: "Sip Happens" },
+  { src: gallery16, title: "Roast Chicken Poutine" },
+  { src: gallery17, title: "Just Milo" },
+  { src: gallery18, title: "Chicken Cheese Bombs" },
 ];
 
 const GallerySection = () => {
