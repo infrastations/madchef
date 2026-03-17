@@ -227,22 +227,29 @@ const Settings = () => {
                   <div key={index} className="bg-white/5 p-6 rounded-2xl border border-white/10 flex gap-4 group">
                     <div className="flex-1 space-y-4">
                       <div className="grid grid-cols-2 gap-4">
-                        <Input value={event.year} onChange={(e) => {
+                        <Input value={event.date} onChange={(e) => {
                           const newEvents = [...formData.madEvents];
-                          newEvents[index].year = e.target.value;
+                          newEvents[index].date = e.target.value;
                           setFormData({ ...formData, madEvents: newEvents });
-                        }} placeholder="Year" className="bg-transparent" />
-                        <Input value={event.title} onChange={(e) => {
+                        }} placeholder="Date (e.g. 2025-11-01)" className="bg-transparent" />
+                        <Input value={event.event_title} onChange={(e) => {
                           const newEvents = [...formData.madEvents];
-                          newEvents[index].title = e.target.value;
+                          newEvents[index].event_title = e.target.value;
                           setFormData({ ...formData, madEvents: newEvents });
-                        }} placeholder="Title" className="bg-transparent" />
+                        }} placeholder="Event Title" className="bg-transparent" />
                       </div>
-                      <Textarea value={event.description} onChange={(e) => {
-                        const newEvents = [...formData.madEvents];
-                        newEvents[index].description = e.target.value;
-                        setFormData({ ...formData, madEvents: newEvents });
-                      }} placeholder="Description" className="bg-transparent h-20" />
+                      <div className="grid grid-cols-2 gap-4">
+                        <Input value={event.location} onChange={(e) => {
+                          const newEvents = [...formData.madEvents];
+                          newEvents[index].location = e.target.value;
+                          setFormData({ ...formData, madEvents: newEvents });
+                        }} placeholder="Location" className="bg-transparent" />
+                        <Input value={event.type} onChange={(e) => {
+                          const newEvents = [...formData.madEvents];
+                          newEvents[index].type = e.target.value;
+                          setFormData({ ...formData, madEvents: newEvents });
+                        }} placeholder="Type (e.g. Branch Launch)" className="bg-transparent" />
+                      </div>
                     </div>
                     <button 
                       onClick={() => {
@@ -256,10 +263,10 @@ const Settings = () => {
                   </div>
                 ))}
                 <Button 
-                  onClick={() => setFormData({ ...formData, madEvents: [...formData.madEvents, { year: "", title: "", description: "" }]})}
+                  onClick={() => setFormData({ ...formData, madEvents: [...formData.madEvents, { date: "", event_title: "", location: "", type: "Brand Milestone" }]})}
                   className="w-full py-6 rounded-2xl border-2 border-dashed border-white/10 bg-transparent hover:bg-white/5 hover:border-primary/50 text-foreground/50 transition-all font-bold"
                 >
-                  <Plus className="mr-2" size={20} /> Add New Milestone
+                  <Plus className="mr-2" size={20} /> Add New Event
                 </Button>
               </div>
             </div>
@@ -287,6 +294,19 @@ const Settings = () => {
                           }}
                           className="bg-white/20 border-none font-bebas text-2xl h-auto py-1 focus-visible:ring-0 max-w-[300px]"
                         />
+                        <div className="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full border border-white/10">
+                          <span className="text-[10px] font-bold text-white/50">ORDER</span>
+                          <input 
+                            type="number" 
+                            value={group.order} 
+                            onChange={(e) => {
+                              const newMenu = [...formData.menu];
+                              newMenu[groupIdx].order = parseInt(e.target.value) || 0;
+                              setFormData({ ...formData, menu: newMenu });
+                            }}
+                            className="bg-transparent w-8 text-center text-sm font-bold focus:outline-none"
+                          />
+                        </div>
                       </div>
                       <Button 
                         variant="ghost" 
@@ -416,7 +436,7 @@ const Settings = () => {
                 <Button 
                   onClick={() => setFormData({ 
                     ...formData, 
-                    menu: [...formData.menu, { menu_group: "New Category", items: [], images: [] }]
+                    menu: [...formData.menu, { menu_group: "New Category", items: [], images: [], order: formData.menu.length + 1 }]
                   })}
                   className="w-full py-10 rounded-3xl border-2 border-dashed border-white/10 bg-transparent hover:bg-white/5 hover:border-primary/50 text-foreground/50 transition-all font-bold text-xl"
                 >
@@ -460,16 +480,31 @@ const Settings = () => {
                         </label>
                       </div>
                       <div className="flex-1 space-y-2">
-                        <Input 
-                          value={outlet.branch_name} 
-                          onChange={(e) => {
-                            const newOutlets = [...formData.outlets];
-                            newOutlets[index].branch_name = e.target.value;
-                            setFormData({ ...formData, outlets: newOutlets });
-                          }}
-                          placeholder="Branch Name"
-                          className="bg-transparent border-white/10 font-bold"
-                        />
+                        <div className="flex items-center gap-3">
+                          <Input 
+                            value={outlet.branch_name} 
+                            onChange={(e) => {
+                              const newOutlets = [...formData.outlets];
+                              newOutlets[index].branch_name = e.target.value;
+                              setFormData({ ...formData, outlets: newOutlets });
+                            }}
+                            placeholder="Branch Name"
+                            className="bg-transparent border-white/10 font-bold"
+                          />
+                          <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-lg border border-white/5">
+                            <span className="text-[10px] font-bold text-white/50">ORDER</span>
+                            <input 
+                              type="number" 
+                              value={outlet.order} 
+                              onChange={(e) => {
+                                const newOutlets = [...formData.outlets];
+                                newOutlets[index].order = parseInt(e.target.value) || 0;
+                                setFormData({ ...formData, outlets: newOutlets });
+                              }}
+                              className="bg-transparent w-8 text-center text-sm font-bold focus:outline-none"
+                            />
+                          </div>
+                        </div>
                         <div className="flex items-center gap-2 text-foreground/50 text-xs">
                           <Clock size={12} />
                           <input 
@@ -532,7 +567,7 @@ const Settings = () => {
                 <button 
                   onClick={() => setFormData({ 
                     ...formData, 
-                    outlets: [...formData.outlets, { branch_name: "New Branch", address: "", opening_hours: "11 AM - 11 PM", phone_number: "", google_maps_location: "", coordinates: [90.41, 23.81], image: "" }]
+                    outlets: [...formData.outlets, { branch_name: "New Branch", address: "", opening_hours: "11 AM - 11 PM", phone_number: "", google_maps_location: "", coordinates: [90.41, 23.81], image: "", order: formData.outlets.length + 1 }]
                   })}
                   className="bg-transparent border-2 border-dashed border-white/10 rounded-3xl hover:bg-white/5 hover:border-primary/50 text-foreground/30 hover:text-primary transition-all flex flex-col items-center justify-center p-8 gap-3"
                 >
@@ -560,7 +595,8 @@ const Settings = () => {
                       const newItem: GalleryItem = {
                         id: `g${Date.now()}`,
                         src: base,
-                        title: "MAD Photo"
+                        title: "MAD Photo",
+                        order: formData.gallery.length + 1
                       };
                       setFormData({ ...formData, gallery: [newItem, ...formData.gallery] });
                     })}
@@ -579,15 +615,27 @@ const Settings = () => {
                       >
                         <Trash2 size={14} />
                       </button>
-                      <Input 
-                        value={item.title} 
-                        onChange={(e) => {
-                          const newGal = [...formData.gallery];
-                          newGal[index].title = e.target.value;
-                          setFormData({ ...formData, gallery: newGal });
-                        }}
-                        className="bg-white/20 border-none h-7 text-[10px] font-bold"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          type="number"
+                          value={item.order} 
+                          onChange={(e) => {
+                            const newGal = [...formData.gallery];
+                            newGal[index].order = parseInt(e.target.value) || 0;
+                            setFormData({ ...formData, gallery: newGal });
+                          }}
+                          className="bg-black/40 border-none h-7 w-12 text-[10px] font-bold text-center p-0"
+                        />
+                        <Input 
+                          value={item.title} 
+                          onChange={(e) => {
+                            const newGal = [...formData.gallery];
+                            newGal[index].title = e.target.value;
+                            setFormData({ ...formData, gallery: newGal });
+                          }}
+                          className="bg-white/20 border-none h-7 flex-1 text-[10px] font-bold"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}

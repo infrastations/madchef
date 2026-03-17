@@ -8,19 +8,20 @@ const GallerySection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { settings } = useSettings();
+  const sortedGallery = [...settings.gallery].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   const openLightbox = (index: number) => setSelectedImage(index);
   const closeLightbox = () => setSelectedImage(null);
   
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % settings.gallery.length);
+      setSelectedImage((selectedImage + 1) % sortedGallery.length);
     }
   };
   
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage - 1 + settings.gallery.length) % settings.gallery.length);
+      setSelectedImage((selectedImage - 1 + sortedGallery.length) % sortedGallery.length);
     }
   };
 
@@ -52,7 +53,7 @@ const GallerySection = () => {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {settings.gallery.map((image, index) => (
+          {sortedGallery.map((image, index) => (
             <motion.div
               key={image.id}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -111,8 +112,8 @@ const GallerySection = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              src={settings.gallery[selectedImage].src}
-              alt={settings.gallery[selectedImage].title}
+              src={sortedGallery[selectedImage].src}
+              alt={sortedGallery[selectedImage].title}
               className="max-h-[80vh] max-w-[90vw] object-contain rounded-xl"
               onClick={(e) => e.stopPropagation()}
             />
@@ -125,8 +126,8 @@ const GallerySection = () => {
             </button>
             
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-              <p className="text-foreground font-bebas text-xl">{settings.gallery[selectedImage].title}</p>
-              <p className="text-foreground/50 text-sm">{selectedImage + 1} / {settings.gallery.length}</p>
+              <p className="text-foreground font-bebas text-xl">{sortedGallery[selectedImage].title}</p>
+              <p className="text-foreground/50 text-sm">{selectedImage + 1} / {sortedGallery.length}</p>
             </div>
           </motion.div>
         )}

@@ -41,7 +41,7 @@ const OutletsSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {settings.outlets.map((outlet, index) => (
+          {[...settings.outlets].sort((a, b) => (a.order || 0) - (b.order || 0)).map((outlet, index) => (
             <motion.div
               key={outlet.branch_name + index}
               initial={{ opacity: 0, y: 20 }}

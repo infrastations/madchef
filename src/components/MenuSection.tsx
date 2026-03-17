@@ -109,7 +109,7 @@ const MenuSection = () => {
         {/* Card View - All items visible */}
         {viewMode === "cards" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {settings.menu.map((category, categoryIndex) => (
+            {[...settings.menu].sort((a, b) => (a.order || 0) - (b.order || 0)).map((category, categoryIndex) => (
               <motion.div
                 key={category.menu_group}
                 initial={{ opacity: 0, y: 40 }}
@@ -162,7 +162,7 @@ const MenuSection = () => {
         {/* Table View */}
         {viewMode === "table" && (
           <div className="space-y-8">
-            {settings.menu.map((category, categoryIndex) => (
+            {[...settings.menu].sort((a, b) => (a.order || 0) - (b.order || 0)).map((category, categoryIndex) => (
               <motion.div
                 key={category.menu_group}
                 initial={{ opacity: 0, y: 30 }}
