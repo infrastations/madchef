@@ -5,6 +5,17 @@ import { Link } from "react-router-dom";
 import { useSettings, AppSettings } from "@/contexts/SettingsContext";
 import { toast } from "sonner";
 import { MadchefEvent } from "@/data/eventsData";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Settings = () => {
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -47,10 +58,8 @@ const Settings = () => {
   };
 
   const handleReset = () => {
-    if (confirm("Are you sure you want to reset all settings? This will clear local storage.")) {
-      resetSettings();
-      window.location.reload(); // Reload to refresh the context state
-    }
+    resetSettings();
+    window.location.reload(); // Reload to refresh the context state
   };
 
   return (
@@ -75,20 +84,69 @@ const Settings = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleReset}
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all font-semibold"
-            >
-              <RefreshCcw size={18} />
-              Reset All
-            </button>
-            <button
-              onClick={handleSave}
-              className="flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-fire text-foreground font-bold hover-fire shadow-lg"
-            >
-              <Save size={18} />
-              Save Changes
-            </button>
+            <AlertDialog>
+              <RefreshCcw size={18} className="absolute left-6 pointer-events-none text-red-400 group-hover:rotate-180 transition-transform duration-500" />
+              <button
+                className="group relative flex items-center gap-2 px-6 py-3 pl-12 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all font-semibold overflow-hidden"
+              >
+                <AlertDialogTrigger className="absolute inset-0 w-full h-full" />
+                Reset All
+              </button>
+              <AlertDialogContent className="bg-fire-dark border-white/5 shadow-2xl rounded-3xl p-8">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="font-bebas text-3xl text-foreground flex items-center gap-3">
+                    <RefreshCcw className="text-red-500" />
+                    Reset to Defaults?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-foreground/60 text-base py-4">
+                    This will clear all your custom menu names, event list, and titles. All settings will return to the original MADCHEF brand defaults.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-4">
+                  <AlertDialogCancel className="bg-transparent border-white/10 text-foreground hover:bg-white/5 rounded-full px-8">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleReset}
+                    className="bg-red-600 hover:bg-red-700 text-foreground rounded-full px-8 font-bold border-none"
+                  >
+                    Yes, Reset Everything
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog>
+              <Save size={18} className="absolute left-8 pointer-events-none z-10" />
+              <button
+                className="group relative flex items-center gap-2 px-8 py-3 pl-14 rounded-full bg-gradient-fire text-foreground font-bold hover-fire shadow-lg overflow-hidden"
+              >
+                <AlertDialogTrigger className="absolute inset-0 w-full h-full" />
+                Save Changes
+              </button>
+              <AlertDialogContent className="bg-fire-dark border-white/5 shadow-2xl rounded-3xl p-8">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="font-bebas text-3xl text-foreground flex items-center gap-3">
+                    <Save className="text-primary" />
+                    Confirm Changes
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-foreground/60 text-base py-4">
+                    Are you ready to update the site? These changes will be stored in your browser's local storage and appear instantly.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-4">
+                  <AlertDialogCancel className="bg-transparent border-white/10 text-foreground hover:bg-white/5 rounded-full px-8">
+                    Go Back
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleSave}
+                    className="bg-gradient-fire text-foreground rounded-full px-8 font-bold border-none hover-fire"
+                  >
+                    Save & Apply
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
 
