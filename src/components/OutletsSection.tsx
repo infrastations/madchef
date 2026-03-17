@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { MapPin, Clock, Phone, Facebook, ExternalLink } from "lucide-react";
-import { outlets } from "@/data/outletsData";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const OutletsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { settings } = useSettings();
 
   return (
     <section id="outlets" className="py-24 relative overflow-hidden">
@@ -29,7 +30,7 @@ const OutletsSection = () => {
             <span className="fire-text">OUTLETS</span>
           </h2>
           <p className="text-foreground/60 max-w-xl mx-auto">
-            {outlets.length} locations across Dhaka, ready to serve you the MAD experience
+            {settings.outlets.length} locations across Dhaka, ready to serve you the MAD experience
           </p>
         </motion.div>
 
@@ -40,9 +41,9 @@ const OutletsSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {outlets.map((outlet, index) => (
+          {settings.outlets.map((outlet, index) => (
             <motion.div
-              key={outlet.branch_name}
+              key={outlet.branch_name + index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.05 * index }}

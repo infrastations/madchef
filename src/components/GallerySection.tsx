@@ -1,63 +1,26 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
-import gallery1 from "@/assets/gallery-1.png";
-import gallery2 from "@/assets/gallery-2.png";
-import gallery3 from "@/assets/gallery-3.png";
-import gallery4 from "@/assets/gallery-4.png";
-import gallery5 from "@/assets/gallery-5.png";
-import gallery6 from "@/assets/gallery-6.png";
-import gallery7 from "@/assets/gallery-7.png";
-import gallery8 from "@/assets/gallery-8.png";
-import gallery9 from "@/assets/gallery-9.png";
-import gallery10 from "@/assets/gallery-10.png";
-import gallery11 from "@/assets/gallery-11.png";
-import gallery12 from "@/assets/gallery-12.png";
-import gallery13 from "@/assets/gallery-13.png";
-import gallery14 from "@/assets/gallery-14.png";
-import gallery15 from "@/assets/gallery-15.png";
-import gallery16 from "@/assets/gallery-16.png";
-import gallery17 from "@/assets/gallery-17.png";
-import gallery18 from "@/assets/gallery-18.png";
-
-const galleryImages = [
-  { src: gallery1, title: "Crispy Chicken Platter" },
-  { src: gallery2, title: "Sweet Dessert" },
-  { src: gallery3, title: "Full Feast" },
-  { src: gallery4, title: "Grilled Chicken Rice" },
-  { src: gallery5, title: "Signature Combo" },
-  { src: gallery6, title: "Shah Poutine" },
-  { src: gallery7, title: "Paneer Sticks" },
-  { src: gallery8, title: "The Original" },
-  { src: gallery9, title: "Shah Poutine Special" },
-  { src: gallery10, title: "Gyro Fix" },
-  { src: gallery11, title: "Naga Achari Rice" },
-  { src: gallery12, title: "Chicken Steak Meal" },
-  { src: gallery13, title: "Gyro Chicken Over Fries" },
-  { src: gallery14, title: "Rice Platter" },
-  { src: gallery15, title: "Sip Happens" },
-  { src: gallery16, title: "Roast Chicken Poutine" },
-  { src: gallery17, title: "Just Milo" },
-  { src: gallery18, title: "Chicken Cheese Bombs" },
-];
+import { useSettings } from "@/contexts/SettingsContext";
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { settings } = useSettings();
 
   const openLightbox = (index: number) => setSelectedImage(index);
   const closeLightbox = () => setSelectedImage(null);
   
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % galleryImages.length);
+      setSelectedImage((selectedImage + 1) % settings.gallery.length);
     }
   };
   
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage - 1 + galleryImages.length) % galleryImages.length);
+      setSelectedImage((selectedImage - 1 + settings.gallery.length) % settings.gallery.length);
     }
   };
 
@@ -89,12 +52,12 @@ const GallerySection = () => {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {galleryImages.map((image, index) => (
+          {settings.gallery.map((image, index) => (
             <motion.div
-              key={index}
+              key={image.id}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
+              transition={{ duration: 0.5, delay: 0.05 * (index % 10) }}
               className={`relative group cursor-pointer overflow-hidden rounded-xl ${
                 index === 0 || index === 4 ? "md:row-span-2" : ""
               }`}
@@ -148,8 +111,8 @@ const GallerySection = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              src={galleryImages[selectedImage].src}
-              alt={galleryImages[selectedImage].title}
+              src={settings.gallery[selectedImage].src}
+              alt={settings.gallery[selectedImage].title}
               className="max-h-[80vh] max-w-[90vw] object-contain rounded-xl"
               onClick={(e) => e.stopPropagation()}
             />
@@ -162,8 +125,8 @@ const GallerySection = () => {
             </button>
             
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-              <p className="text-foreground font-bebas text-xl">{galleryImages[selectedImage].title}</p>
-              <p className="text-foreground/50 text-sm">{selectedImage + 1} / {galleryImages.length}</p>
+              <p className="text-foreground font-bebas text-xl">{settings.gallery[selectedImage].title}</p>
+              <p className="text-foreground/50 text-sm">{selectedImage + 1} / {settings.gallery.length}</p>
             </div>
           </motion.div>
         )}

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Grid3X3, List, Flame } from "lucide-react";
-import { menuData, categoryImageSets } from "@/data/menuData";
+import { useSettings } from "@/contexts/SettingsContext";
 
 type ViewMode = "cards" | "table";
 
@@ -10,11 +10,16 @@ const RotatingImages = ({ images, category }: { images: string[]; category: stri
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (images.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
   }, [images.length]);
+
+  if (images.length === 0) {
+    return <div className="h-48 bg-muted/20 flex items-center justify-center"><Flame className="text-primary/20" size={48} /></div>;
+  }
 
   return (
     <div className="relative h-48 overflow-hidden bg-card">
@@ -41,6 +46,7 @@ const MenuSection = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { settings } = useSettings();
 
   return (
     <section id="menu" className="py-24 relative overflow-hidden">
@@ -57,7 +63,7 @@ const MenuSection = () => {
           className="text-center mb-12"
         >
           <span className="text-secondary font-semibold uppercase tracking-widest text-sm">
-            Our Menu
+            {settings.navbar.menu}
           </span>
           <h2 className="font-bebas text-5xl md:text-7xl mt-4 mb-6">
             <span className="text-foreground">Get</span>{" "}
@@ -103,7 +109,7 @@ const MenuSection = () => {
         {/* Card View - All items visible */}
         {viewMode === "cards" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {menuData.map((category, categoryIndex) => (
+            {settings.menu.map((category, categoryIndex) => (
               <motion.div
                 key={category.menu_group}
                 initial={{ opacity: 0, y: 40 }}
@@ -114,7 +120,7 @@ const MenuSection = () => {
                 {/* Category Image - Rotating */}
                 <div className="relative">
                   <RotatingImages 
-                    images={categoryImageSets[category.menu_group] || [categoryImageSets["Classic Burgers"][0]]} 
+                    images={category.images} 
                     category={category.menu_group}
                   />
                   <div className="absolute bottom-4 left-4 right-4">
@@ -156,7 +162,7 @@ const MenuSection = () => {
         {/* Table View */}
         {viewMode === "table" && (
           <div className="space-y-8">
-            {menuData.map((category, categoryIndex) => (
+            {settings.menu.map((category, categoryIndex) => (
               <motion.div
                 key={category.menu_group}
                 initial={{ opacity: 0, y: 30 }}
