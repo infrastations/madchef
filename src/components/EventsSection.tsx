@@ -1,11 +1,13 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Flame, Sparkles } from "lucide-react";
-import { events, eventTypeColors } from "@/data/eventsData";
+import { eventTypeColors } from "@/data/eventsData";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const EventsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { settings } = useSettings();
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -17,7 +19,7 @@ const EventsSection = () => {
   };
 
   // Sort events by date descending
-  const sortedEvents = [...events].sort(
+  const sortedEvents = [...settings.madEvents].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -38,15 +40,15 @@ const EventsSection = () => {
         >
           <span className="text-secondary font-semibold uppercase tracking-widest text-sm flex items-center justify-center gap-2">
             <Sparkles size={16} />
-            Our Journey
+            {settings.eventsSection.badge}
             <Sparkles size={16} />
           </span>
           <h2 className="font-bebas text-5xl md:text-7xl mt-4 mb-6">
-            <span className="fire-text">MAD</span>{" "}
-            <span className="text-foreground">Events</span>
+            <span className="fire-text">{settings.eventsSection.title1}</span>{" "}
+            <span className="text-foreground">{settings.eventsSection.title2}</span>
           </h2>
           <p className="text-foreground/60 max-w-xl mx-auto">
-            From a small street cart to 9 branches across Dhaka - here's our journey
+            {settings.eventsSection.description}
           </p>
         </motion.div>
 

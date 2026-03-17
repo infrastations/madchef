@@ -17,6 +17,8 @@ import hero13 from "@/assets/hero-13.png";
 import hero14 from "@/assets/hero-14.png";
 import hero15 from "@/assets/hero-15.png";
 
+import { useSettings } from "@/contexts/SettingsContext";
+
 // New images first, then existing images (hero-1 moved to end)
 const heroImages = [
   hero7, hero8, hero9, hero10, hero11, hero12, hero13, hero14, hero15,
@@ -25,6 +27,7 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const { settings } = useSettings();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -71,7 +74,7 @@ const Hero = () => {
           >
             <Flame className="text-primary animate-flame" size={28} />
             <span className="text-secondary font-semibold uppercase tracking-widest text-xs md:text-sm">
-              Since 2014 • Dhaka, Bangladesh
+              {settings.hero.badge}
             </span>
           </motion.div>
 
@@ -81,14 +84,14 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="font-bebas text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-4"
           >
-            <span className="text-foreground">Once You Go</span>
+            <span className="text-foreground">{settings.hero.titleLine1}</span>
             <br />
-            <span className="fire-text text-shadow-fire">MAD</span>
+            <span className="fire-text text-shadow-fire">{settings.hero.titleLine2}</span>
             <span className="text-foreground">,</span>
             <br />
-            <span className="text-foreground">You Never Go</span>
+            <span className="text-foreground">{settings.hero.titleLine3}</span>
             <br />
-            <span className="fire-text text-shadow-fire">BACK!</span>
+            <span className="fire-text text-shadow-fire">{settings.hero.titleLine4}</span>
           </motion.h1>
 
           <motion.p
@@ -97,7 +100,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-foreground/70 text-sm md:text-base mb-6 max-w-md"
           >
-            Experience the MAD combination of secret sauces & recipes that makes our burgers unlike any others in Dhaka.
+            {settings.hero.description}
           </motion.p>
         </div>
       </div>

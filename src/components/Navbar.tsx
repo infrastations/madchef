@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/madchef-logo.png";
-
-const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Our Story", href: "#story" },
-  { name: "Menu", href: "#menu" },
-  { name: "Gallery", href: "#gallery" },
-  { name: "Outlets", href: "#outlets" },
-  { name: "Reviews", href: "#reviews" },
-  { name: "Events", href: "#events" },
-];
+import { useSettings } from "@/contexts/SettingsContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { settings } = useSettings();
+
+  const navLinks = [
+    { name: settings.navbar.home, href: "#home" },
+    { name: settings.navbar.story, href: "#story" },
+    { name: settings.navbar.menu, href: "#menu" },
+    { name: settings.navbar.gallery, href: "#gallery" },
+    { name: settings.navbar.outlets, href: "#outlets" },
+    { name: settings.navbar.reviews, href: "#reviews" },
+    { name: settings.navbar.events, href: "#events" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {

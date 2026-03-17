@@ -2,8 +2,22 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Flame, Globe, ExternalLink } from "lucide-react";
 import logo from "@/assets/madchef-logo.png";
 
+import { Link } from "react-router-dom";
+import { useSettings } from "@/contexts/SettingsContext";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { settings } = useSettings();
+
+  const footerLinks = [
+    { name: settings.navbar.home, href: "#home" },
+    { name: settings.navbar.story, href: "#story" },
+    { name: settings.navbar.menu, href: "#menu" },
+    { name: settings.navbar.gallery, href: "#gallery" },
+    { name: settings.navbar.outlets, href: "#outlets" },
+    { name: settings.navbar.reviews, href: "#reviews" },
+    { name: settings.navbar.events, href: "#events" },
+  ];
 
   return (
     <footer className="relative pt-24 pb-8 overflow-hidden">
@@ -26,9 +40,16 @@ const Footer = () => {
                 MAD<span className="text-primary">CHEF</span>
               </span>
             </div>
-            <p className="text-foreground/60 text-sm mb-6 leading-relaxed">
+            <p className="text-foreground/60 text-sm mb-4 leading-relaxed">
               Once you go MAD, you never go BACK! Experience the best gourmet burgers in Dhaka since 2014.
             </p>
+            <Link 
+              to="/settings" 
+              className="text-xs uppercase tracking-widest text-primary/40 hover:text-primary transition-colors flex items-center gap-2 mb-6"
+            >
+              <div className="w-1 h-1 rounded-full bg-primary/40" />
+              Admin Settings
+            </Link>
             <div className="flex gap-3 flex-wrap">
               <a
                 href="https://www.facebook.com/madchefbd"
@@ -72,13 +93,13 @@ const Footer = () => {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {["Home", "Our Story", "Menu", "Gallery", "Outlets", "Reviews", "Events"].map((link) => (
-                <li key={link}>
+              {footerLinks.map((link) => (
+                <li key={link.name}>
                   <a
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
+                    href={link.href}
                     className="text-foreground/60 hover:text-primary transition-colors text-sm"
                   >
-                    {link}
+                    {link.name}
                   </a>
                 </li>
               ))}
