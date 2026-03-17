@@ -85,13 +85,14 @@ const Settings = () => {
 
           <div className="flex items-center gap-4">
             <AlertDialog>
-              <RefreshCcw size={18} className="absolute left-6 pointer-events-none text-red-400 group-hover:rotate-180 transition-transform duration-500" />
-              <button
-                className="group relative flex items-center gap-2 px-6 py-3 pl-12 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all font-semibold overflow-hidden"
-              >
-                <AlertDialogTrigger className="absolute inset-0 w-full h-full" />
-                Reset All
-              </button>
+              <AlertDialogTrigger asChild>
+                <button
+                  className="group flex items-center gap-2 px-6 py-3 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all font-semibold"
+                >
+                  <RefreshCcw size={18} className="group-hover:rotate-180 transition-transform duration-500" />
+                  Reset All
+                </button>
+              </AlertDialogTrigger>
               <AlertDialogContent className="bg-fire-dark border-white/5 shadow-2xl rounded-3xl p-8">
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-bebas text-3xl text-foreground flex items-center gap-3">
@@ -117,13 +118,14 @@ const Settings = () => {
             </AlertDialog>
 
             <AlertDialog>
-              <Save size={18} className="absolute left-8 pointer-events-none z-10" />
-              <button
-                className="group relative flex items-center gap-2 px-8 py-3 pl-14 rounded-full bg-gradient-fire text-foreground font-bold hover-fire shadow-lg overflow-hidden"
-              >
-                <AlertDialogTrigger className="absolute inset-0 w-full h-full" />
-                Save Changes
-              </button>
+              <AlertDialogTrigger asChild>
+                <button
+                  className="group flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-fire text-foreground font-bold hover-fire shadow-lg"
+                >
+                  <Save size={18} />
+                  Save Changes
+                </button>
+              </AlertDialogTrigger>
               <AlertDialogContent className="bg-fire-dark border-white/5 shadow-2xl rounded-3xl p-8">
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-bebas text-3xl text-foreground flex items-center gap-3">
